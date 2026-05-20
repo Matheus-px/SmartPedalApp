@@ -1,23 +1,28 @@
 import QtQuick
 import QtQuick.Controls
 
-Page {
+Page 
+{
 
-    background: Rectangle {
+    background: Rectangle 
+    {
        color: "#2c2c2c"
     }
 
-    Column {
+    Column 
+    {
         anchors.centerIn: parent
         spacing: 30
 
-        Label {
-            text: "Filters"
+        Label 
+        {
+            text: "Presets"
             color: "white"
             font.pixelSize: 26
         }
 
-        Button {
+        Button 
+        {
             text: "Back"
             onClicked: stack.pop()
         }

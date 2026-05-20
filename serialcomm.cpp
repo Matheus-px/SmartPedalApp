@@ -12,7 +12,8 @@ void ESP32::connectToESP32()
         qDebug() << "Found:" << port.portName() << port.description();
     
     // PORTA,TROCAR
-    serial.setPortName("COM3");
+    //serial.setPortName("COM3");
+    serial.setPortName(serial.portName());
 
     serial.setBaudRate(QSerialPort::Baud115200);
     serial.setDataBits(QSerialPort::Data8);
