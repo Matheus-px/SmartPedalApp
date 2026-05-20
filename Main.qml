@@ -192,12 +192,13 @@ ApplicationWindow
                         model: filterModel
 
                         delegate: Item
-                        {
+                        {    
                             id: delegateRoot
 
                             required property string name
                             required property bool enable
-                            property int visualIndex: DelegateModel.itemsIndex
+
+                            readonly property int visualIndex: DelegateModel.itemsIndex
 
                             width: listView.width
                             height: 70
@@ -215,20 +216,68 @@ ApplicationWindow
                                 y: 5
 
                                 radius: 6
-                                color: mouseArea.drag.active ?
+
+                                color:
+                                    dragHandle.drag.active ?
                                     "#3a3a3a" :
                                     "#2c2c2c"
 
                                 border.color: "#555"
 
+                                Behavior on y
+                                {
+                                    NumberAnimation
+                                    {
+                                        duration: 120
+                                    }
+                                }
+
                                 RowLayout
                                 {
                                     anchors.fill: parent
                                     anchors.margins: 15
+                                    spacing: 10
+
+                                    Rectangle
+                                    {
+                                        id: handleBox
+
+                                        width: 32
+                                        height: 32
+                                        radius: 4
+
+                                        color: "#444"
+
+                                        Layout.alignment: Qt.AlignVCenter
+
+                                        Text
+                                        {
+                                            anchors.centerIn: parent
+                                            text: "≡"
+                                            color: "white"
+                                            font.pixelSize: 18
+                                        }
+
+                                        MouseArea
+                                        {
+                                            id: dragHandle
+
+                                            anchors.fill: parent
+
+                                            drag.target: content
+                                            drag.axis: Drag.YAxis
+
+                                            onReleased:
+                                            {
+                                                content.y = 5
+                                            }
+                                        }
+                                    }
 
                                     Text
                                     {
                                         text: delegateRoot.name
+
                                         color: "white"
                                         font.pixelSize: 18
 
@@ -262,38 +311,9 @@ ApplicationWindow
                                         }
                                     }
                                 }
-                                MouseArea
-                                {
-                                    id: mouseArea
 
-                                    anchors.fill: parent
-
-                                    drag.target: parent
-                                    drag.axis: Drag.YAxis
-
-                                    propagateComposedEvents: true
-
-                                    onPressed: function(mouse)
-                                    {
-                                        mouse.accepted = false
-                                    }
-
-                                    onReleased:
-                                    {
-                                        parent.y = 5
-                                    }
-                                }
-
-                                Drag.active: mouseArea.drag.active
+                                Drag.active: dragHandle.drag.active
                                 Drag.source: delegateRoot
-
-                                Behavior on y
-                                {
-                                    NumberAnimation
-                                    {
-                                        duration: 120
-                                    }
-                                }
                             }
 
                             DropArea
