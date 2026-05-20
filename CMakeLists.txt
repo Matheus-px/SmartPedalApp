@@ -20,7 +20,7 @@ qt_add_qml_module(appSmartPedalApp
     QML_FILES
         Main.qml
         Settings.qml
-        Filters.qml
+        Presets.qml
         Connection.qml
 )
 

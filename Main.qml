@@ -66,13 +66,11 @@ ApplicationWindow
 
                             ToolButton 
                             {
-                                anchors.centerIn: parent.top
+                                anchors.centerIn: parent
                                 text: "CFG" // PRECISA POR ICON DPS
                                 onClicked: stack.push(Qt.resolvedUrl("Settings.qml"))
                             }
-
                         }
-                    
                     }
                 }
                     Column 
@@ -107,7 +105,7 @@ ApplicationWindow
                                 id: presetsButton
                                 text: "Presets"
                                 width: parent.width
-                                onClicked: stack.push(Qt.resolvedUrl("Filters.qml"))
+                                onClicked: stack.push(Qt.resolvedUrl("Presets.qml"))
 
                                 background: Rectangle 
                                 {
@@ -138,8 +136,8 @@ ApplicationWindow
                 {
                     id: filterArea
 
-                    anchors.top: presetsButton.bottom
-                    anchors.topMargin: 15
+                    anchors.top: parent.top
+                    anchors.topMargin: 170
 
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -157,11 +155,35 @@ ApplicationWindow
                     {
                         id: filterModel
 
-                        ListElement { name: "Filter 1" }
-                        ListElement { name: "Filter 2" }
-                        ListElement { name: "Filter 3" }
-                        ListElement { name: "Filter 4" }
-                        ListElement { name: "Filter 5" }
+                        ListElement
+                        {
+                            name: "Filter 1"
+                            enable: true
+                        }
+
+                        ListElement
+                        {
+                            name: "Filter 2"
+                            enable: true
+                        }
+
+                        ListElement
+                        {
+                            name: "Filter 3"
+                            enable: false
+                        }
+
+                        ListElement
+                        {
+                            name: "Filter 4"
+                            enable: true
+                        }
+
+                        ListElement
+                        {
+                            name: "Filter 5"
+                            enable: false
+                        }
                     }
 
                     DelegateModel 
@@ -169,53 +191,120 @@ ApplicationWindow
                         id: visualModel
                         model: filterModel
 
-                        delegate: MouseArea 
+                        delegate: Item
                         {
-                            id: dragArea
+                            id: delegateRoot
 
+                            required property string name
+                            required property bool enable
                             property int visualIndex: DelegateModel.itemsIndex
 
                             width: listView.width
                             height: 70
 
-                            drag.target: content
-
-                            Rectangle 
+                            Rectangle
                             {
                                 id: content
 
                                 width: parent.width - 20
                                 height: 60
 
-                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.horizontalCenter:
+                                    parent.horizontalCenter
 
                                 y: 5
 
                                 radius: 6
-                                color: "#2c2c2c"
+                                color: mouseArea.drag.active ?
+                                    "#3a3a3a" :
+                                    "#2c2c2c"
+
                                 border.color: "#555"
 
-                                Drag.active: dragArea.drag.active
-                                Drag.source: dragArea
-
-                                Text 
+                                RowLayout
                                 {
-                                    anchors.centerIn: parent
-                                    text: "name"
-                                    color: "white"
-                                    font.pixelSize: 18
+                                    anchors.fill: parent
+                                    anchors.margins: 15
+
+                                    Text
+                                    {
+                                        text: delegateRoot.name
+                                        color: "white"
+                                        font.pixelSize: 18
+
+                                        Layout.fillWidth: true
+                                    }
+
+                                    Button
+                                    {
+                                        text:
+                                            delegateRoot.enable ?
+                                            "ON" :
+                                            "OFF"
+
+                                        onClicked:
+                                        {
+                                            filterModel.setProperty(
+                                                delegateRoot.visualIndex,
+                                                "enable",
+                                                !delegateRoot.enable
+                                            )
+                                        }
+
+                                        background: Rectangle
+                                        {
+                                            radius: 4
+
+                                            color:
+                                                delegateRoot.enable ?
+                                                "#00bfa5" :
+                                                "#444"
+                                        }
+                                    }
+                                }
+                                MouseArea
+                                {
+                                    id: mouseArea
+
+                                    anchors.fill: parent
+
+                                    drag.target: parent
+                                    drag.axis: Drag.YAxis
+
+                                    propagateComposedEvents: true
+
+                                    onPressed: function(mouse)
+                                    {
+                                        mouse.accepted = false
+                                    }
+
+                                    onReleased:
+                                    {
+                                        parent.y = 5
+                                    }
+                                }
+
+                                Drag.active: mouseArea.drag.active
+                                Drag.source: delegateRoot
+
+                                Behavior on y
+                                {
+                                    NumberAnimation
+                                    {
+                                        duration: 120
+                                    }
                                 }
                             }
 
-                            DropArea 
+                            DropArea
                             {
                                 anchors.fill: parent
 
-                                onEntered: function(drag) 
+                                onEntered: function(drag)
                                 {
                                     visualModel.items.move(
                                         drag.source.visualIndex,
-                                        dragArea.visualIndex
+                                        delegateRoot.visualIndex
                                     )
                                 }
                             }
@@ -232,6 +321,23 @@ ApplicationWindow
                         spacing: 8
 
                         model: visualModel
+                        move: Transition 
+                        {
+                            NumberAnimation 
+                            {
+                                properties: "x,y"
+                                duration: 150
+                            }
+                        }
+
+                        displaced: Transition 
+                        {
+                            NumberAnimation 
+                            {
+                                properties: "x,y"
+                                duration: 150
+                            }
+                        }
                     }
                 }
 
