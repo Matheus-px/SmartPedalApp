@@ -9,7 +9,7 @@ ApplicationWindow
     visible: true
     width: 400
     height: 700
-    color: "black"
+    color: 'black'
 
     StackView 
     {
@@ -28,7 +28,7 @@ ApplicationWindow
 
         Page 
         {
-            background: Rectangle { color: "black" }
+            background: Rectangle { color: "#101010" }
 
             Column 
             {
@@ -63,6 +63,7 @@ ApplicationWindow
                             width: 48
                             height: parent.height
                             color: "#2c2c2c"
+                            
 
                             ToolButton 
                             {
@@ -96,7 +97,8 @@ ApplicationWindow
                                 background: Rectangle 
                                 {
                                     color: "#2c2c2c"
-                                    radius: 4
+                                    border.color: "#444"
+                                    radius: 6
                                 }
                             }
 
@@ -110,7 +112,8 @@ ApplicationWindow
                                 background: Rectangle 
                                 {
                                     color: "#2c2c2c"
-                                    radius: 4
+                                    border.color: "#444"
+                                    radius: 6
                                 }
                             }
                         }
@@ -142,7 +145,7 @@ ApplicationWindow
                     anchors.left: parent.left
                     anchors.right: parent.right
 
-                    anchors.bottom: sendButton.top
+                    anchors.bottom: bottomBar.top
                     anchors.bottomMargin: 15
 
                     anchors.margins: 15
@@ -186,19 +189,40 @@ ApplicationWindow
                         }
                     }
 
-                    DelegateModel 
+                    ListView 
                     {
-                        id: visualModel
-                        model: filterModel
+                        id: listView
 
+                        anchors.fill: parent
+                        anchors.margins: 10
+
+                        spacing: 8
+
+                        model: filterModel
+                        move: Transition 
+                        {
+                            NumberAnimation 
+                            {
+                                properties: "x,y"
+                                duration: 150
+                            }
+                        }
+
+                        displaced: Transition 
+                        {
+                            NumberAnimation 
+                            {
+                                properties: "x,y"
+                                duration: 150
+                            }
+                        }
                         delegate: Item
-                        {    
+                        {
                             id: delegateRoot
 
                             required property string name
                             required property bool enable
-
-                            readonly property int visualIndex: DelegateModel.itemsIndex
+                            required property int index
 
                             width: listView.width
                             height: 70
@@ -240,8 +264,6 @@ ApplicationWindow
 
                                     Rectangle
                                     {
-                                        id: handleBox
-
                                         width: 32
                                         height: 32
                                         radius: 4
@@ -294,7 +316,7 @@ ApplicationWindow
                                         onClicked:
                                         {
                                             filterModel.setProperty(
-                                                delegateRoot.visualIndex,
+                                                delegateRoot.index,
                                                 "enable",
                                                 !delegateRoot.enable
                                             )
@@ -322,63 +344,54 @@ ApplicationWindow
 
                                 onEntered: function(drag)
                                 {
-                                    visualModel.items.move(
-                                        drag.source.visualIndex,
-                                        delegateRoot.visualIndex
+                                    filterModel.move(
+                                        drag.source.index,
+                                        delegateRoot.index,
+                                        1
                                     )
                                 }
                             }
                         }
                     }
-
-                    ListView 
-                    {
-                        id: listView
-
-                        anchors.fill: parent
-                        anchors.margins: 10
-
-                        spacing: 8
-
-                        model: visualModel
-                        move: Transition 
-                        {
-                            NumberAnimation 
-                            {
-                                properties: "x,y"
-                                duration: 150
-                            }
-                        }
-
-                        displaced: Transition 
-                        {
-                            NumberAnimation 
-                            {
-                                properties: "x,y"
-                                duration: 150
-                            }
-                        }
-                    }
                 }
 
-                Button 
+            Rectangle
+            {
+                id: bottomBar
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                height: 80
+                color: "#2c2c2c"
+
+                Button
                 {
                     id: sendButton
-                    text: "Send"
+                    anchors.centerIn: parent
 
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 15
-
+                    width: parent.width - 30
                     height: 50
 
-                    background: Rectangle 
+                    contentItem: Text
                     {
-                        color: "#2c2c2c"
-                        radius: 4
+                        text: "Send"
+                        color: "black"
+                        font.pixelSize: 16
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    background: Rectangle
+                    {
+                        radius: 6
+                        color: "#00bfa5"
+                        border.color : "#444"
                     }
                 }
+            }
         }
     }
 }

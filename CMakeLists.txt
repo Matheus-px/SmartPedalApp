@@ -12,6 +12,9 @@ qt_add_executable(appSmartPedalApp
     main.cpp
     serialcomm.h
     serialcomm.cpp
+    Filters.cpp
+    Filters.h
+    bibs.h
 )
 
 qt_add_qml_module(appSmartPedalApp
