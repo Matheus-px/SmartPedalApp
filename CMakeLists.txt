@@ -9,22 +9,22 @@ find_package(Qt6 6.8 REQUIRED COMPONENTS Quick SerialPort)
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appSmartPedalApp
-    main.cpp
-    serialcomm.h
-    serialcomm.cpp
-    Filters.cpp
-    Filters.h
-    bibs.h
+    source/main.cpp
+    source/serialcomm.h
+    source/serialcomm.cpp
+    source/Filters.cpp
+    source/Filters.h
+    source/bibs.h
 )
 
 qt_add_qml_module(appSmartPedalApp
     URI SmartPedalApp
     VERSION 1.0
     QML_FILES
-        Main.qml
-        Settings.qml
-        Presets.qml
-        Connection.qml
+        ui/Main.qml
+        ui/Settings.qml
+        ui/Presets.qml
+        ui/Connection.qml
 )
 
 set_target_properties(appSmartPedalApp PROPERTIES

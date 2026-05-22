@@ -11,7 +11,7 @@
             "program": "${command:cmake.launchTargetPath}",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "visualizerFile": "c:\\Users\\DIMASU\\AppData\\Roaming\\Code\\User\\workspaceStorage\\c17f6f36a49e45aa64e2675bdcfc2920\\tonka3000.qtvsctools\\qt.natvis.xml",
+            "visualizerFile": "c:\\Users\\User\\AppData\\Roaming\\Code\\User\\workspaceStorage\\b2eed0854dbc4aeacb76d945add8220b\\tonka3000.qtvsctools\\qt.natvis.xml",
             "windows": {
                 "sourceFileMap": {
                     "Q:/qt5_workdir/w/s": "${command:qt-cpp.sourceDirectory}",
