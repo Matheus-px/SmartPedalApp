@@ -1,7 +1,13 @@
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import ESPFunctions 1.0
 
 Page {
+    id: page
+
+    ESP32 {
+        id: esp32
+    }
 
     background: Rectangle {
        color: "#2c2c2c"
@@ -20,6 +26,12 @@ Page {
         Button {
             text: "Back"
             onClicked: stack.pop()
+        }
+        Button{
+            text: "Connect to ESP"
+            onClicked:{
+                esp32.connectToESP32();
+            }
         }
     }
 }

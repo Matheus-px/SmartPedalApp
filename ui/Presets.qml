@@ -209,7 +209,15 @@ Page
             width: parent.width - 30
             height: 50
 
-            text: "Save Current Preset"
+            contentItem: Text
+            {
+                text: "Save Current Preset"
+                color: "black"
+                font.pixelSize: 16
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
 
             background: Rectangle
             {

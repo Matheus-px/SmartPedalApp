@@ -10,7 +10,7 @@ class ESP32 : public QObject
 public:
     explicit ESP32(QObject *parent = nullptr);
 
-    void connectToESP32();
+    Q_INVOKABLE void connectToESP32();
     void sendCommand(const QString &cmd);
 private slots:
     void readData();

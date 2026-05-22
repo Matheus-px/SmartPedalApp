@@ -160,32 +160,32 @@ ApplicationWindow
 
                         ListElement
                         {
-                            name: "Filter 1"
+                            name: "Bitcrusher"
                             enable: true
                         }
 
                         ListElement
                         {
-                            name: "Filter 2"
+                            name: "Delay"
                             enable: true
                         }
 
                         ListElement
                         {
-                            name: "Filter 3"
-                            enable: false
-                        }
-
-                        ListElement
-                        {
-                            name: "Filter 4"
+                            name: "Drive"
                             enable: true
                         }
 
                         ListElement
                         {
-                            name: "Filter 5"
-                            enable: false
+                            name: "Equalizer"
+                            enable: true
+                        }
+
+                        ListElement
+                        {
+                            name: "Tremolo"
+                            enable: true
                         }
                     }
 

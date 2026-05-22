@@ -1,6 +1,7 @@
 #ifndef BIBS_H
 #define BIBS_H
 
+#include <qqml.h>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QCoreApplication>
