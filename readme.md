@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icons/smartpedalicon.png">
+  <img src="icons/smartpedalicon.png" width="500" height="500">
 </p>
 
 <h1 align="center">SmartPedal</h1>
