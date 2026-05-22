@@ -1,5 +1,4 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include "bibs.h"
 
 int main(int argc, char *argv[])
 {

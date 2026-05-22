@@ -1,11 +1,7 @@
 #ifndef SERIALCOMM_H
 #define SERIALCOMM_H
 
-#include <QCoreApplication>
-#include <QSerialPort>
-#include <QSerialPortInfo>
-#include <QDebug>
-#include <QObject>
+#include "bibs.h"
 
 class ESP32 : public QObject
 {
