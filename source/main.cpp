@@ -12,12 +12,10 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    qmlRegisterType<ESP32>(
-        "ESPFunctions",
-        1,
-        0,
-        "ESP32"
-    );
+
+    ESP32 esp32;
+    engine.rootContext()->setContextProperty("esp32",&esp32);
+    
     engine.loadFromModule("SmartPedalApp", "Main");
 
     return app.exec();

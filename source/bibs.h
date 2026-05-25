@@ -4,6 +4,7 @@
 #include <qqml.h>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>

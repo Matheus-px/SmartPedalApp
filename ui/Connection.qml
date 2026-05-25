@@ -1,13 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import ESPFunctions 1.0
 
 Page {
     id: page
-
-    ESP32 {
-        id: esp32
-    }
 
     background: Rectangle {
        color: "#2c2c2c"
