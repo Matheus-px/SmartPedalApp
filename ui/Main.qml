@@ -137,7 +137,7 @@ ApplicationWindow
                 */
                 Rectangle 
                 {
-                    id: filterArea
+                    id: effectArea
 
                     anchors.top: parent.top
                     anchors.topMargin: 170
@@ -156,34 +156,39 @@ ApplicationWindow
 
                     ListModel 
                     {
-                        id: filterModel
+                        id: effectModel
 
                         ListElement
                         {
+                            effectId: 1
                             name: "Bitcrusher"
                             enable: true
                         }
 
                         ListElement
                         {
+                            effectId: 2
                             name: "Delay"
                             enable: true
                         }
 
                         ListElement
                         {
+                            effectId: 3
                             name: "Drive"
                             enable: true
                         }
 
                         ListElement
                         {
+                            effectId: 4
                             name: "Equalizer"
                             enable: true
                         }
 
                         ListElement
                         {
+                            effectId: 5
                             name: "Tremolo"
                             enable: true
                         }
@@ -198,7 +203,7 @@ ApplicationWindow
 
                         spacing: 8
 
-                        model: filterModel
+                        model: effectModel
                         move: Transition 
                         {
                             NumberAnimation 
@@ -315,7 +320,7 @@ ApplicationWindow
 
                                         onClicked:
                                         {
-                                            filterModel.setProperty(
+                                            effectModel.setProperty(
                                                 delegateRoot.index,
                                                 "enable",
                                                 !delegateRoot.enable
@@ -344,7 +349,7 @@ ApplicationWindow
 
                                 onEntered: function(drag)
                                 {
-                                    filterModel.move(
+                                    effectModel.move(
                                         drag.source.index,
                                         delegateRoot.index,
                                         1
@@ -389,6 +394,21 @@ ApplicationWindow
                         radius: 6
                         color: "#00bfa5"
                         border.color : "#444"
+                    }
+
+                    onClicked:
+                    {
+                        let filters = []
+
+                        for (let i = 0; i < effectModel.count; i++)
+                        {
+                            filters.push({
+                                filterId: effectModel.get(i).filterId,
+                                enable: effectModel.get(i).enable
+                            })
+                        }
+
+                        esp32.sendToESP32(filters) // ARRUMAR P TODOS OS ARQUIVOS USAR SO UM OBJ ESP32
                     }
                 }
             }

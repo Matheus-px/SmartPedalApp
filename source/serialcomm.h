@@ -11,6 +11,7 @@ public:
     explicit ESP32(QObject *parent = nullptr);
 
     Q_INVOKABLE void connectToESP32();
+    Q_INVOKABLE void sendToESP32(const QVariantList &effects);
     void sendCommand(const QString &cmd);
 private slots:
     void readData();

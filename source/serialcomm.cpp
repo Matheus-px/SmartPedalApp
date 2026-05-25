@@ -8,28 +8,61 @@ ESP32::ESP32(QObject *parent) : QObject(parent)
 
 void ESP32::connectToESP32()
 {
+    bool connected = false;
+
     for (const QSerialPortInfo &port : QSerialPortInfo::availablePorts())
-        qDebug() << "Found:" << port.portName() << port.description();
-    
-    // PORTA,TROCAR
-    //serial.setPortName("COM3");
-    serial.setPortName(serial.portName());
-
-    serial.setBaudRate(QSerialPort::Baud115200);
-    serial.setDataBits(QSerialPort::Data8);
-    serial.setParity(QSerialPort::NoParity);
-    serial.setStopBits(QSerialPort::OneStop);
-    serial.setFlowControl(QSerialPort::NoFlowControl);
-
-    if (serial.open(QIODevice::ReadWrite))
     {
-        qDebug() << "Connected to ESP32";
-        sendCommand("HELLO\n");
+        int vid = port.vendorIdentifier();
+        if(vid == 0x10C4 || vid == 0x1A86 || vid == 0x303A || vid == 0x0403)
+        {
+            qDebug() << "Trying:" << port.portName() << port.description();
+
+            serial.setPort(port);
+
+            serial.setBaudRate(QSerialPort::Baud115200);
+            serial.setDataBits(QSerialPort::Data8);
+            serial.setParity(QSerialPort::NoParity);
+            serial.setStopBits(QSerialPort::OneStop);
+            serial.setFlowControl(QSerialPort::NoFlowControl);
+
+            if (serial.open(QIODevice::ReadWrite))
+            {
+                qDebug() << "Connected to:" << port.portName();
+
+                sendCommand("HELLO\n");
+
+                connected = true;
+                break;
+            }
+            else qDebug() << "Failed:" << serial.errorString();
+        }
     }
-    else
+
+    if (!connected) qDebug() << "No ESP32 found";
+}
+
+void ESP32::sendToESP32(const QVariantList &filters)
+{
+    QString message;
+
+    for (const QVariant &item : filters)
     {
-        qDebug() << "Connection failed:" << serial.errorString();
+        QVariantMap map = item.toMap();
+
+        int id = map["filterId"].toInt();
+        bool enabled = map["enable"].toBool();
+
+        message += QString::number(id)
+                + ","
+                + QString::number(enabled)
+                + "\n";
     }
+
+    message += "END\n";
+
+    qDebug().noquote() << message;
+
+    sendCommand(message);
 }
 
 void ESP32::sendCommand(const QString &cmd)
