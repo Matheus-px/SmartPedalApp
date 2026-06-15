@@ -4,7 +4,7 @@ project(SmartPedalApp VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Quick Qml SerialPort)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Quick Qml SerialPort QuickControls2)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -35,7 +35,7 @@ set_target_properties(appSmartPedalApp PROPERTIES
 )
 
 target_link_libraries(appSmartPedalApp
-    PRIVATE Qt6::Quick Qt6::Qml Qt6::SerialPort
+    PRIVATE Qt6::Quick Qt6::Qml Qt6::SerialPort Qt6::QuickControls2
 )
 
 include(GNUInstallDirs)

@@ -13,6 +13,10 @@ public:
     Q_INVOKABLE void connectToESP32();
     Q_INVOKABLE void sendToESP32(const QVariantList &effects);
     void sendCommand(const QString &cmd);
+
+signals:
+    void connectionStatus(bool connection);
+
 private slots:
     void readData();
 

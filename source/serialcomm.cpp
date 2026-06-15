@@ -32,13 +32,19 @@ void ESP32::connectToESP32()
                 sendCommand("HELLO\n");
 
                 connected = true;
+                emit connectionStatus(true);
                 break;
             }
             else qDebug() << "Failed:" << serial.errorString();
+            emit connectionStatus(false);
         }
     }
 
-    if (!connected) qDebug() << "No ESP32 found";
+    if (!connected)
+    { 
+        qDebug() << "No ESP32 found";
+        emit connectionStatus(false);
+    }
 }
 
 void ESP32::sendToESP32(const QVariantList &filters)
@@ -49,7 +55,7 @@ void ESP32::sendToESP32(const QVariantList &filters)
     {
         QVariantMap map = item.toMap();
 
-        int id = map["filterId"].toInt();
+        int id = map["effectId"].toInt();
         bool enabled = map["enable"].toBool();
 
         message += QString::number(id)
