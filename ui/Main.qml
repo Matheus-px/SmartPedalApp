@@ -8,7 +8,7 @@ ApplicationWindow
 {
     visible: true
     width: 400
-    height: 700
+    height: 650
     color: 'black'
 
     StackView 
@@ -62,12 +62,12 @@ ApplicationWindow
                         height: parent.height
                         color: "#2c2c2c"
                         
-                        ToolButton 
-                        {
-                            anchors.centerIn: parent
-                            text: "CFG" // PRECISA POR ICON DPS
-                            onClicked: stack.push(Qt.resolvedUrl("Settings.qml"))
-                        }
+                        //ToolButton 
+                        //{
+                        //    anchors.centerIn: parent
+                        //    text: "CFG" // PRECISA POR ICON DPS
+                        //    onClicked: stack.push(Qt.resolvedUrl("Settings.qml"))
+                        //}
                     }
                 }
             }
@@ -97,20 +97,20 @@ ApplicationWindow
                     }
                 }
 
-                ToolButton 
-                {
-                    id: presetsButton
-                    text: "Presets"
-                    width: parent.width
-                    onClicked: stack.push(Qt.resolvedUrl("Presets.qml"))
-
-                    background: Rectangle 
-                    {
-                        color: "#2c2c2c"
-                        border.color: "#444"
-                        radius: 6
-                    }
-                }
+                //ToolButton 
+                //{
+                //    id: presetsButton
+                //    text: "Presets"
+                //    width: parent.width
+                //    onClicked: stack.push(Qt.resolvedUrl("Presets.qml"))
+//
+                //    background: Rectangle 
+                //    {
+                //        color: "#2c2c2c"
+                //        border.color: "#444"
+                //        radius: 6
+                //    }
+                //}
             }
 
             // 3. Bottom Bar (Anchored to the very bottom)
