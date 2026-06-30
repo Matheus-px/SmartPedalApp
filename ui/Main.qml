@@ -136,7 +136,7 @@ ApplicationWindow
                     contentItem: Text 
                     {
                         text: "Send"
-                        color: "black"
+                        color: "white"
                         font.pixelSize: 16
 
                         horizontalAlignment: Text.AlignHCenter

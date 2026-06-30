@@ -1,88 +1,116 @@
 #include "serialcomm.h"
+#include <QDebug>
+
+#if defined(Q_OS_ANDROID)
+#include <unistd.h> // For raw read/write on Android
+#endif
 
 ESP32::ESP32(QObject *parent) : QObject(parent)
 {
-    //connectToESP32();
-    connect(&serial, &QSerialPort::readyRead, this, &ESP32::readData);
+    //
+}
+
+ESP32::~ESP32()
+{
+    disconnectESP32();
 }
 
 void ESP32::connectToESP32()
 {
+#if defined(Q_OS_ANDROID)
+    // --- ANDROID LOGIC ---
+    qDebug() << "Requesting USB permissions via Android JNI...";
+    
+    // Call your custom Java class to handle the Android UsbManager
+    QJniObject javaSerialWrapper = QJniObject("com/yourcompany/app/UsbSerialHelper");
+    m_fileDescriptor = javaSerialWrapper.callMethod<jint>("openDevice");
+
+    if (m_fileDescriptor != -1)
+    {
+        qDebug() << "Android USB Port Opened successfully!";
+        emit connectionStatus(true);
+        sendCommand("HELLO\n");
+    } 
+    else
+    {
+        qDebug() << "Failed to open Android USB port.";
+        emit connectionStatus(false);
+    }
+
+#else
+    // --- DESKTOP LOGIC ---
+    if (serial.isOpen()) serial.close();
     bool connected = false;
 
     for (const QSerialPortInfo &port : QSerialPortInfo::availablePorts())
     {
         int vid = port.vendorIdentifier();
-        if(vid == 0x10C4 || vid == 0x1A86 || vid == 0x303A || vid == 0x0403)
+        if (vid == 0x10C4 || vid == 0x1A86 || vid == 0x303A || vid == 0x0403)
         {
-            qDebug() << "Trying:" << port.portName() << port.description();
-
             serial.setPort(port);
-
             serial.setBaudRate(QSerialPort::Baud115200);
-            serial.setDataBits(QSerialPort::Data8);
-            serial.setParity(QSerialPort::NoParity);
-            serial.setStopBits(QSerialPort::OneStop);
-            serial.setFlowControl(QSerialPort::NoFlowControl);
-
+            
             if (serial.open(QIODevice::ReadWrite))
             {
-                qDebug() << "Connected to:" << port.portName();
-
-                sendCommand("HELLO\n");
-
                 connected = true;
                 emit connectionStatus(true);
+                //sendCommand("HELLO\n");
                 break;
             }
-            else qDebug() << "Failed:" << serial.errorString();
-            emit connectionStatus(false);
         }
     }
+    if (!connected) emit connectionStatus(false);
+#endif
+}
 
-    if (!connected)
-    { 
-        qDebug() << "No ESP32 found";
+void ESP32::disconnectESP32()
+{
+#if defined(Q_OS_ANDROID)
+    if (m_fileDescriptor != -1)
+    {
+        close(m_fileDescriptor);
+        m_fileDescriptor = -1;
         emit connectionStatus(false);
     }
+#else
+    if (serial.isOpen())
+    {
+        serial.close();
+        emit connectionStatus(false);
+    }
+#endif
 }
 
 void ESP32::sendToESP32(const QVariantList &filters)
 {
     QString message;
-
     for (const QVariant &item : filters)
     {
         QVariantMap map = item.toMap();
-
-        int id = map["effectId"].toInt();
-        bool enabled = map["enable"].toBool();
-
-        message += QString::number(id)
-                + ","
-                + QString::number(enabled)
-                + "\n";
+        message += QString::number(map["effectId"].toInt()) + "," + QString::number(map["enable"].toBool()) + "\n";
     }
-
     message += "END\n";
-
-    qDebug().noquote() << message;
-
     sendCommand(message);
+    qDebug().noquote() << message;
 }
 
 void ESP32::sendCommand(const QString &cmd)
 {
-    if (serial.isOpen())
+    QByteArray payload = cmd.toUtf8();
+
+#if defined(Q_OS_ANDROID)
+    if (m_fileDescriptor != -1)
     {
-        serial.write(cmd.toUtf8());
-        serial.flush();
+        // Write directly to the Android file descriptor
+        write(m_fileDescriptor, payload.data(), payload.size());
     }
-}
-
-void ESP32::readData()
-{
-    QByteArray data = serial.readAll();
-
-    qDebug() << "ESP32 says:" << data;
+#else
+    if (serial.isOpen() && serial.isWritable())
+    {
+        serial.write(payload);
+        serial.flush();
+        qDebug() << "message sent";
+    }
+    
+#endif
 }
