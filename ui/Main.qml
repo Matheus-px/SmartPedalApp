@@ -33,7 +33,7 @@ ApplicationWindow
             // 1. Top Title Bar
             Rectangle 
             {
-                id: titleBar // Given an ID so other elements can anchor to it
+                id: titleBar
                 anchors.top: parent.top
                 width: parent.width
                 height: 64
@@ -72,7 +72,7 @@ ApplicationWindow
                 }
             }
 
-            // 2. Buttons (Anchored strictly below the titleBar)
+            // 2. Buttons 
             Column 
             {
                 id: buttonColumn
@@ -113,7 +113,7 @@ ApplicationWindow
                 //}
             }
 
-            // 3. Bottom Bar (Anchored to the very bottom)
+            // 3. Bottom Bar 
             Rectangle 
             {
                 id: bottomBar
@@ -169,7 +169,7 @@ ApplicationWindow
                 }
             }
 
-            // 4. Effect Area (Dynamically fills the space between the buttons and bottom bar)
+            // 4. Effect Area 
             Rectangle 
             {
                 id: effectArea

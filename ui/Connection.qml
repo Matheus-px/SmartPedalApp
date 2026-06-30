@@ -5,7 +5,6 @@ Page
 {
     id: page
 
-    // Matched the background to your main page so the buttons stand out
     background: Rectangle 
     {
         color: "#101010"
@@ -14,7 +13,7 @@ Page
     Column 
     {
         anchors.centerIn: parent
-        width: parent.width - 40 // Gives the buttons a 20px margin on each side
+        width: parent.width - 40
         spacing: 10
 
         Label 
@@ -28,7 +27,7 @@ Page
         Button 
         {
             text: "Back"
-            width: parent.width // Stretches the button to match the Column's width
+            width: parent.width 
 
             contentItem: Text 
             {
@@ -55,7 +54,7 @@ Page
         Button
         {
             text: "Connect to ESP"
-            width: parent.width // Stretches the button to match the Column's width
+            width: parent.width 
 
             contentItem: Text 
             {
@@ -91,7 +90,6 @@ Page
 
         modal: true
 
-        // Cleaned up the popup by applying the Rectangle to the background property
         background: Rectangle
         {
             radius: 8

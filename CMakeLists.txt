@@ -22,8 +22,6 @@ qt_add_qml_module(appSmartPedalApp
     VERSION 1.0
     QML_FILES
         ui/Main.qml
-        ui/Settings.qml
-        ui/Presets.qml
         ui/Connection.qml
 )
 
