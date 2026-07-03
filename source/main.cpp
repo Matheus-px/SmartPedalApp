@@ -1,8 +1,12 @@
 #include "bibs.h"
 #include "serialcomm.h"
 
+#include <QQuickWindow>
+
 int main(int argc, char *argv[])
 {
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+
     QGuiApplication app(argc, argv);
     QQuickStyle::setStyle("Fusion");
 

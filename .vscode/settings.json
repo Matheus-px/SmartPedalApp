@@ -1,3 +1,13 @@
 {
-    "cmake.debugConfig": {}
+    //"cmake.debugConfig": {}
+    "cmake.configureSettings":
+    {
+        "ANDROID_SDK_ROOT": "C:/Users/DIMASU/AppData/Local/Android/Sdk",
+        "ANDROID_NDK_ROOT": "C:/Users/DIMASU/AppData/Local/Android/Sdk/ndk/30.0.14904198"
+    },
+    
+    "cmake.environment":
+    {
+        "JAVA_HOME": "C:/Program Files/Android/Android Studio/jbr"
+    }
 }

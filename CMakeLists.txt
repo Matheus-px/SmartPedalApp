@@ -42,3 +42,16 @@ install(TARGETS appSmartPedalApp
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+if(ANDROID)
+    set_property(TARGET appSmartPedalApp PROPERTY 
+        set_target_properties(appSmartPedalApp PROPERTIES 
+        # Explicitly maps your custom package folder template
+        QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android"
+        
+        QT_ANDROID_PACKAGE_NAME "com.usbhelper.app"
+        
+        QT_ANDROID_TARGET_SDK_VERSION 34
+        )
+    )
+endif()

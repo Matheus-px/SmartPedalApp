@@ -21,8 +21,16 @@ void ESP32::connectToESP32()
     // --- ANDROID LOGIC ---
     qDebug() << "Requesting USB permissions via Android JNI...";
     
-    // Call your custom Java class to handle the Android UsbManager
-    QJniObject javaSerialWrapper = QJniObject("com/yourcompany/app/UsbSerialHelper");
+    // Call your custom Java class to handle the Angithudroid UsbManager
+    QJniObject javaSerialWrapper = QJniObject("com/usbhelper/app/UsbSerialHelper");
+
+    if (!javaSerialWrapper.isValid())
+    {
+        qDebug() << "CRASH PREVENTED: Java class not found! Check your folder structure.";
+        emit connectionStatus(false);
+        return; // Stop here instead of crashing!
+    }
+
     m_fileDescriptor = javaSerialWrapper.callMethod<jint>("openDevice");
 
     if (m_fileDescriptor != -1)
